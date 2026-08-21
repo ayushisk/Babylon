@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders";
 
-
+//
 export default function Page() {
   useEffect(() => {
     const canvas = document.getElementById("renderCanvas");
