@@ -1,4 +1,4 @@
-html, body{
+html, body {
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -9,5 +9,9 @@ html, body{
 #renderCanvas {
   width: 100%;
   height: 100%;
+  /* This prevents the browser from intercepting touch events for scrolling */
   touch-action: none;
+  /* Removes blue highlight on focus/click in some browsers */
+  outline: none;
+  display: block;
 }
