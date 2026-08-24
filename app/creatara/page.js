@@ -18,35 +18,35 @@ export default function Page() {
     const createScene = function () {
       const scene = new BABYLON.Scene(engine);
 
-      // 1. Camera Setup
+     
       const camera = new BABYLON.ArcRotateCamera(
         "camera",
         Math.PI / 2, 
         Math.PI / 2.5, 
-        10, // Radius: Initial distance
+        10, 
         BABYLON.Vector3.Zero(),
         scene
       );
       
       camera.attachControl(canvasRef.current, true);
       
-      // Limits to prevent looking under the floor
+   
       camera.lowerBetaLimit = 0.1;
       camera.upperBetaLimit = Math.PI / 2.1;
 
-      // Smooth interaction settings
+
       camera.wheelDeltaPercentage = 0.01;
       camera.panningSensibility = 0; // Set to 0 if you only want rotation, >0 to allow right-click drag
 
-      // 2. Lighting
+   
       new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
-      // 3. Material
+    
       const material = new BABYLON.StandardMaterial("carMat", scene);
       material.diffuseColor = new BABYLON.Color3(1, 0, 0); 
       materialRef.current = material;
 
-      // 4. Model Loading with Centering Logic
+     
       BABYLON.SceneLoader.ImportMesh(
         "",
         "/models/",
@@ -54,28 +54,30 @@ export default function Page() {
         // "Vintage Car.stl",
         scene,
         function (meshes) {
-          // GLB files have a __root__ node at index 0
-          const root = meshes[0];
+         
+          const root = new BABYLON.TransformNode("root", scene);
+          meshes.forEach((m) => {
+            if (m.parent === null) {
+              m.setParent(root);
+            }
+          });
 
 
-          // Apply material only to actual meshes
+        
           meshes.forEach((mesh) => {
             if (mesh.getClassName() === "Mesh") {
               mesh.material = material;
             }
           });
 
-          root.rotation.x = Math.PI /2;
+          root.rotation.x = - Math.PI /2;
 
 
-          // FIX ROTATION: Use FramingBehavior to center the camera on the car geometry
-          // This prevents the "wobble" if the model's pivot point is off-center
           camera.useFramingBehavior = true;
           const framingBehavior = camera.getBehaviorByName("Framing");
-          framingBehavior.framingTime = 0; // Instant snap on load
-          framingBehavior.elevationReturnTime = -1; // Prevent camera from auto-moving back
-          
-          // Focus the camera on the car's bounding box
+          framingBehavior.framingTime = 0; 
+          framingBehavior.elevationReturnTime = -1; 
+     
           camera.framingBehavior.zoomOnMeshesHierarchy(meshes);
         }
       );
