@@ -21,8 +21,8 @@ export default function Page() {
       // 1. Camera Setup
       const camera = new BABYLON.ArcRotateCamera(
         "camera",
-        Math.PI / 2, // Alpha: Horizontal rotation
-        Math.PI / 2.5, // Beta: Vertical rotation (slightly above horizontal)
+        Math.PI / 2, // Alpha: Horizontal rotationdfdf
+        Math.PI / 2.5, 
         10, // Radius: Initial distance
         BABYLON.Vector3.Zero(),
         scene
